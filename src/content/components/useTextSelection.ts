@@ -6,7 +6,11 @@ type SelectionInfo = {
   target: HTMLInputElement | HTMLTextAreaElement;
 };
 
-export const useTextSelection = () => {
+type UseTextSelectionProps = {
+  onSelectionChange?: (selection: SelectionInfo | null) => void;
+};
+
+export const useTextSelection = ({ onSelectionChange }: UseTextSelectionProps = {}) => {
   const [selection, setSelection] = useState<SelectionInfo | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -18,16 +22,19 @@ export const useTextSelection = () => {
       const selectedText = target.value.substring(start, end);
       const rect = target.getBoundingClientRect();
       
-      setSelection({
+      const newSelection = {
         text: selectedText,
         rect: rect,
         target: target
-      });
+      };
+      setSelection(newSelection);
+      onSelectionChange?.(newSelection);
     };
 
     const handleClickOutside = (e: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
         setSelection(null);
+        onSelectionChange?.(null);
       }
     };
 
@@ -42,6 +49,7 @@ export const useTextSelection = () => {
 
   const clearSelection = () => {
     setSelection(null);
+    onSelectionChange?.(null);
   };
 
   return {

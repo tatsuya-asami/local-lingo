@@ -53,3 +53,109 @@
 .translation-button:active {
   transform: translateY(0);
 }
+
+.translation-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.translation-button:disabled:hover {
+  transform: none;
+}
+
+.translation-error-dialog {
+  margin: auto;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  max-width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.translation-error-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.translation-error-container {
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.translation-error-content {
+  flex: 1;
+}
+
+.translation-error-title {
+  font-weight: bold;
+  color: #d32f2f;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.translation-error-message {
+  color: #666;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.translation-error-instructions {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.translation-error-instructions li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.translation-error-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.translation-error-close {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.translation-error-close:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
+}
+
+.translation-loading {
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.translation-result {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.translation-buttons {
+  display: flex;
+  gap: 8px;
+}

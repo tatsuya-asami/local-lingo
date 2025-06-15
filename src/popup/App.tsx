@@ -1,22 +1,67 @@
-import crxLogo from '@/assets/crx.svg'
-import reactLogo from '@/assets/react.svg'
-import viteLogo from '@/assets/vite.svg'
-import HelloWorld from '@/components/HelloWorld'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 export default function App() {
+  const [isEnabled, setIsEnabled] = useState(true)
+
+  useEffect(() => {
+    chrome.storage.sync.get(['translationEnabled'], (result) => {
+      setIsEnabled(result.translationEnabled !== false)
+    })
+  }, [])
+
+  const toggleEnabled = () => {
+    const newValue = !isEnabled
+    setIsEnabled(newValue)
+    chrome.storage.sync.set({ translationEnabled: newValue })
+  }
+
   return (
-    <div>
-      <a href="https://vite.dev" target="_blank" rel="noreferrer">
-        <img src={viteLogo} className="logo" alt="Vite logo" />
-      </a>
-      <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
-        <img src={reactLogo} className="logo react" alt="React logo" />
-      </a>
-      <a href="https://crxjs.dev/vite-plugin" target="_blank" rel="noreferrer">
-        <img src={crxLogo} className="logo crx" alt="crx logo" />
-      </a>
-      <HelloWorld msg="Vite + React + CRXJS" />
+    <div style={{ padding: '20px', minWidth: '300px' }}>
+      <h2 style={{ marginBottom: '20px', fontSize: '18px' }}>Chrome Offline Translator</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span>翻訳機能</span>
+        <label style={{ 
+          position: 'relative', 
+          display: 'inline-block', 
+          width: '50px', 
+          height: '26px' 
+        }}>
+          <input
+            type="checkbox"
+            checked={isEnabled}
+            onChange={toggleEnabled}
+            style={{ opacity: 0, width: 0, height: 0 }}
+          />
+          <span style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isEnabled ? '#4CAF50' : '#ccc',
+            transition: '0.2s',
+            borderRadius: '26px',
+          }}>
+            <span style={{
+              position: 'absolute',
+              content: '',
+              height: '20px',
+              width: '20px',
+              left: isEnabled ? '27px' : '3px',
+              top: '3px',
+              backgroundColor: 'white',
+              transition: '0.2s',
+              borderRadius: '50%',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            }}></span>
+          </span>
+        </label>
+      </div>
+      <p style={{ marginTop: '15px', fontSize: '12px', color: '#666' }}>
+        テキストを選択すると翻訳ボタンが表示されます
+      </p>
     </div>
   )
 }

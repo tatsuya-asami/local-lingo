@@ -5,9 +5,11 @@ export default defineManifest({
   manifest_version: 3,
   name: pkg.name,
   version: pkg.version,
+  description: "オフラインで動作する翻訳拡張機能",
   icons: {
     48: "public/logo.png",
   },
+  minimum_chrome_version: "120",
   action: {
     default_icon: {
       48: "public/logo.png",
@@ -20,5 +22,5 @@ export default defineManifest({
       matches: ["https://*/*"],
     },
   ],
-  permissions: ["activeTab", "clipboardWrite"],
+  permissions: ["activeTab", "clipboardWrite", "storage"],
 });

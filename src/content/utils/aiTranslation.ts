@@ -253,13 +253,7 @@ export const detectAndTranslate = async (
   }
 
   const detectedLanguage = detectionResult.result;
-  let targetLanguage: string;
-
-  if (detectedLanguage === "ja") {
-    targetLanguage = "en";
-  } else {
-    targetLanguage = "ja";
-  }
+  const targetLanguage = detectedLanguage === "en" ? "ja" : "en";
 
   if (detectedLanguage === targetLanguage) {
     return { result: text };

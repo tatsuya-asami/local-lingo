@@ -2,6 +2,23 @@
 
 LocalLingo is a completely offline private translation Chrome extension. It performs translations using Chrome's built-in Translator and Language Detector APIs without any network communication.
 
+## Supported Languages
+
+LocalLingo supports automatic detection and translation for the following languages:
+- 🇺🇸 **English** (en)
+- 🇯🇵 **Japanese** (ja)
+- 🇨🇳 **Chinese Simplified** (zh-CN)
+- 🇹🇼 **Chinese Traditional** (zh-TW)
+- 🇨🇳 **Chinese** (zh)
+- 🇪🇸 **Spanish** (es)
+- 🇷🇺 **Russian** (ru)
+
+### Translation Logic
+- **English** → **Japanese**
+- **All other languages** (Japanese, Chinese, Spanish, Russian, etc.) → **English**
+
+The extension automatically detects the language of selected text and translates accordingly.
+
 ## Features
 
 - 🔒 **Completely Offline** - No network communication, privacy protection guaranteed

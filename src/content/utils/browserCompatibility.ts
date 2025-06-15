@@ -4,14 +4,13 @@ export const checkBrowserCompatibility = () => {
   const chromeVersion = chromeMatch ? parseInt(chromeMatch[1]) : 0;
 
   return {
-    isChrome: !!chromeMatch,
     chromeVersion,
   };
 };
 
 export const checkAIAPIAvailability = async () => {
-  let languageDetectorStatus = 'not-available';
-  let translatorStatus = 'not-available';
+  let languageDetectorStatus = "not-available";
+  let translatorStatus = "not-available";
   let hasAI = false;
 
   try {
@@ -24,14 +23,14 @@ export const checkAIAPIAvailability = async () => {
       hasAI = true;
     }
   } catch (error) {
-    console.error('Language detector capabilities check failed:', error);
+    console.error("Language detector capabilities check failed:", error);
   }
 
   try {
     if (window.Translator) {
       translatorStatus = await window.Translator.availability({
-        sourceLanguage: 'en',
-        targetLanguage: 'ja'
+        sourceLanguage: "en",
+        targetLanguage: "ja",
       });
       hasAI = true;
     } else if (window.ai?.translator) {
@@ -40,13 +39,13 @@ export const checkAIAPIAvailability = async () => {
       hasAI = true;
     }
   } catch (error) {
-    console.error('Translator capabilities check failed:', error);
+    console.error("Translator capabilities check failed:", error);
   }
 
   return {
     hasAI,
-    hasLanguageDetector: languageDetectorStatus === 'available',
-    hasTranslator: translatorStatus === 'available',
+    hasLanguageDetector: languageDetectorStatus === "available",
+    hasTranslator: translatorStatus === "available",
     languageDetectorStatus,
     translatorStatus,
   };
@@ -55,17 +54,6 @@ export const checkAIAPIAvailability = async () => {
 export const getCompatibilityInstructions = async () => {
   const compatibility = checkBrowserCompatibility();
   const apiAvailability = await checkAIAPIAvailability();
-  
-  if (!compatibility.isChrome) {
-    return {
-      title: "Chrome ブラウザが必要です",
-      message: "この拡張機能はGoogle Chromeでのみ動作します。",
-      instructions: [
-        "Google Chromeをダウンロードしてインストールしてください",
-        "https://www.google.com/chrome/",
-      ],
-    };
-  }
 
   if (!apiAvailability.hasAI) {
     if (compatibility.chromeVersion < 120) {
@@ -100,10 +88,12 @@ export const getCompatibilityInstructions = async () => {
 
   const missingAPIs = [];
   const statusMessages = [];
-  
+
   if (!apiAvailability.hasLanguageDetector) {
     missingAPIs.push("Language Detection API");
-    statusMessages.push(`Language Detection: ${apiAvailability.languageDetectorStatus}`);
+    statusMessages.push(
+      `Language Detection: ${apiAvailability.languageDetectorStatus}`
+    );
   }
   if (!apiAvailability.hasTranslator) {
     missingAPIs.push("Translation API");
@@ -111,15 +101,18 @@ export const getCompatibilityInstructions = async () => {
   }
 
   if (missingAPIs.length > 0) {
-    const hasDownloading = apiAvailability.languageDetectorStatus === 'downloading' || 
-                          apiAvailability.translatorStatus === 'downloading';
-    
-    const hasDownloadable = apiAvailability.languageDetectorStatus === 'downloadable' || 
-                           apiAvailability.translatorStatus === 'downloadable';
-    
-    const hasUnavailable = apiAvailability.languageDetectorStatus === 'unavailable' || 
-                          apiAvailability.translatorStatus === 'unavailable';
-    
+    const hasDownloading =
+      apiAvailability.languageDetectorStatus === "downloading" ||
+      apiAvailability.translatorStatus === "downloading";
+
+    const hasDownloadable =
+      apiAvailability.languageDetectorStatus === "downloadable" ||
+      apiAvailability.translatorStatus === "downloadable";
+
+    const hasUnavailable =
+      apiAvailability.languageDetectorStatus === "unavailable" ||
+      apiAvailability.translatorStatus === "unavailable";
+
     if (hasDownloading) {
       return {
         title: "AI モデルをダウンロード中です",

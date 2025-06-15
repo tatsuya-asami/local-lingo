@@ -33,7 +33,7 @@ export const TextSelectionHandler: React.FC = () => {
   const { rect } = currentSelection;
   
   const popupHeight = 45;
-  const margin = 10;
+  const margin = 20;
   const viewportWidth = window.innerWidth;
   
   let top = rect.top - popupHeight - margin;

@@ -94,7 +94,7 @@ export const TextSelectionHandler: React.FC = () => {
             }
           </div>
         ) : translationResult ? (
-          <>
+          <div className="translation-content">
             <div className="translation-result">
               {translationResult}
             </div>
@@ -111,8 +111,25 @@ export const TextSelectionHandler: React.FC = () => {
               >
                 コピー
               </button>
+              <button
+                className="translation-disable-button"
+                onClick={() => {
+                  const hostname = window.location.hostname;
+                  chrome.storage.sync.get(['disabledUrls'], (result) => {
+                    const disabledUrls = result.disabledUrls || [];
+                    if (!disabledUrls.includes(hostname)) {
+                      disabledUrls.push(hostname);
+                      chrome.storage.sync.set({ disabledUrls }, () => {
+                        window.location.reload();
+                      });
+                    }
+                  });
+                }}
+              >
+                このサイトで無効化
+              </button>
             </div>
-          </>
+          </div>
         ) : (
           <div className="translation-loading">
             翻訳を準備中...

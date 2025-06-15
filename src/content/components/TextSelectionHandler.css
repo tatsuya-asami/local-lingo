@@ -1,7 +1,5 @@
 .translation-buttons-container {
-  display: flex;
-  gap: 8px;
-  padding: 4px;
+  padding: 8px;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
@@ -148,14 +146,41 @@
   border: 1px solid #dee2e6;
   border-radius: 4px;
   padding: 8px 12px;
-  margin-bottom: 8px;
   font-size: 14px;
   color: #333;
   max-width: 300px;
   word-wrap: break-word;
+  flex: 1;
+}
+
+.translation-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .translation-buttons {
   display: flex;
   gap: 8px;
+}
+
+.translation-disable-section {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.translation-disable-button {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.translation-disable-button:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
 }

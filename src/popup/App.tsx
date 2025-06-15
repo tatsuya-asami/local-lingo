@@ -3,10 +3,12 @@ import './App.css'
 
 export default function App() {
   const [isEnabled, setIsEnabled] = useState(true)
+  const [disabledUrls, setDisabledUrls] = useState<string[]>([])
 
   useEffect(() => {
-    chrome.storage.sync.get(['translationEnabled'], (result) => {
+    chrome.storage.sync.get(['translationEnabled', 'disabledUrls'], (result) => {
       setIsEnabled(result.translationEnabled !== false)
+      setDisabledUrls(result.disabledUrls || [])
     })
   }, [])
 
@@ -14,6 +16,12 @@ export default function App() {
     const newValue = !isEnabled
     setIsEnabled(newValue)
     chrome.storage.sync.set({ translationEnabled: newValue })
+  }
+
+  const removeDisabledUrl = (urlToRemove: string) => {
+    const newDisabledUrls = disabledUrls.filter(url => url !== urlToRemove)
+    setDisabledUrls(newDisabledUrls)
+    chrome.storage.sync.set({ disabledUrls: newDisabledUrls })
   }
 
   return (
@@ -62,6 +70,46 @@ export default function App() {
       <p style={{ marginTop: '15px', fontSize: '12px', color: '#666' }}>
         テキストを選択すると翻訳ボタンが表示されます
       </p>
+      
+      {disabledUrls.length > 0 && (
+        <div style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '14px', marginBottom: '10px', color: '#333' }}>
+            無効化されたサイト
+          </h3>
+          <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+            {disabledUrls.map((url, index) => (
+              <div 
+                key={index}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '8px 0',
+                  borderBottom: '1px solid #eee'
+                }}
+              >
+                <span style={{ fontSize: '12px', color: '#666', flex: 1 }}>
+                  {url}
+                </span>
+                <button
+                  onClick={() => removeDisabledUrl(url)}
+                  style={{
+                    padding: '4px 8px',
+                    fontSize: '11px',
+                    background: '#ff4444',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '3px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  削除
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

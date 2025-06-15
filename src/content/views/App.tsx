@@ -4,10 +4,15 @@ import "./App.css";
 
 function App() {
   const [isEnabled, setIsEnabled] = useState(true);
+  const [isUrlEnabled, setIsUrlEnabled] = useState(true);
 
   useEffect(() => {
-    chrome.storage.sync.get(["translationEnabled"], (result) => {
+    const hostname = window.location.hostname;
+    
+    chrome.storage.sync.get(["translationEnabled", "disabledUrls"], (result) => {
       setIsEnabled(result.translationEnabled !== false);
+      const disabledUrls = result.disabledUrls || [];
+      setIsUrlEnabled(!disabledUrls.includes(hostname));
     });
 
     const listener = (changes: {
@@ -15,6 +20,10 @@ function App() {
     }) => {
       if (changes.translationEnabled) {
         setIsEnabled(changes.translationEnabled.newValue !== false);
+      }
+      if (changes.disabledUrls) {
+        const newDisabledUrls = changes.disabledUrls.newValue || [];
+        setIsUrlEnabled(!newDisabledUrls.includes(hostname));
       }
     };
 
@@ -25,7 +34,7 @@ function App() {
     };
   }, []);
 
-  if (!isEnabled) {
+  if (!isEnabled || !isUrlEnabled) {
     return null;
   }
 

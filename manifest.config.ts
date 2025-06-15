@@ -3,16 +3,23 @@ import pkg from "./package.json";
 
 export default defineManifest({
   manifest_version: 3,
-  name: pkg.name,
+  name: "LocalLingo",
   version: pkg.version,
-  description: "オフラインで動作する翻訳拡張機能",
+  description:
+    "A completely offline private translation tool using Chrome's built-in Translator and Language Detector APIs",
   icons: {
-    48: "public/logo.png",
+    16: "public/icon16.png",
+    32: "public/icon32.png",
+    48: "public/icon48.png",
+    128: "public/icon128.png",
   },
   minimum_chrome_version: "120",
   action: {
     default_icon: {
-      48: "public/logo.png",
+      16: "public/icon16.png",
+      32: "public/icon32.png",
+      48: "public/icon48.png",
+      128: "public/icon128.png",
     },
     default_popup: "src/popup/index.html",
   },

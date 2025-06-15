@@ -1,0 +1,48 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="120" fill="#2563eb" />
+  
+  <!-- Inner Circle for contrast -->
+  <circle cx="128" cy="128" r="108" fill="#3b82f6" />
+  
+  <!-- Globe/World Icon (representing languages) -->
+  <g transform="translate(128, 128)" opacity="0.3">
+    <!-- Globe outline -->
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#ffffff" stroke-width="6" />
+    
+    <!-- Meridian lines -->
+    <ellipse cx="0" cy="0" rx="25" ry="70" fill="none" stroke="#ffffff" stroke-width="4" />
+    <ellipse cx="0" cy="0" rx="50" ry="70" fill="none" stroke="#ffffff" stroke-width="4" />
+    
+    <!-- Latitude lines -->
+    <line x1="-70" y1="0" x2="70" y2="0" stroke="#ffffff" stroke-width="4" />
+    <ellipse cx="0" cy="-35" rx="60" ry="20" fill="none" stroke="#ffffff" stroke-width="4" />
+    <ellipse cx="0" cy="35" rx="60" ry="20" fill="none" stroke="#ffffff" stroke-width="4" />
+  </g>
+  
+  <!-- Lock Icon (representing privacy/offline) -->
+  <g transform="translate(180, 180)">
+    <!-- Lock body -->
+    <rect x="-20" y="-15" width="40" height="30" rx="4" fill="#10b981" stroke="#ffffff" stroke-width="2" />
+    
+    <!-- Lock shackle -->
+    <path d="M -15 -15 L -15 -25 Q -15 -35 -5 -35 L 5 -35 Q 15 -35 15 -25 L 15 -15" 
+          fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+    
+    <!-- Keyhole -->
+    <circle cx="0" cy="0" r="4" fill="#ffffff" />
+    <rect x="-2" y="0" width="4" height="8" fill="#ffffff" />
+  </g>
+  
+  <!-- Double arrow for translation -->
+  <g transform="translate(128, 128)">
+    <path d="M -30 -90 L -10 -90 L -10 -100 L 10 -85 L -10 -70 L -10 -80 L -30 -80 Z" 
+          fill="#ffffff" opacity="0.9" />
+    <path d="M 30 -70 L 10 -70 L 10 -60 L -10 -75 L 10 -90 L 10 -80 L 30 -80 Z" 
+          fill="#ffffff" opacity="0.9" />
+  </g>
+  
+  <!-- Letters "LL" for Local-Lingo -->
+  <text x="128" y="145" font-family="Arial, sans-serif" font-size="72" font-weight="bold" 
+        text-anchor="middle" fill="#ffffff" opacity="0.9">LL</text>
+</svg>

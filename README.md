@@ -14,8 +14,8 @@ LocalLingo supports automatic detection and translation for the following langua
 - 🇷🇺 **Russian** (ru)
 
 ### Translation Logic
-- **English** → **Japanese**
-- **All other languages** (Japanese, Chinese, Spanish, Russian, etc.) → **English**
+- **Japanese** → **English**
+- **All other languages** (English, Chinese, Spanish, Russian, etc.) → **Japanese**
 
 The extension automatically detects the language of selected text and translates accordingly.
 

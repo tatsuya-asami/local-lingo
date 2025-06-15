@@ -1,0 +1,55 @@
+.translation-buttons-container {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.translation-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.translate-replace {
+  background: #4CAF50;
+  color: white;
+}
+
+.translate-replace:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+}
+
+.translate-copy {
+  background: #2196F3;
+  color: white;
+}
+
+.translate-copy:hover {
+  background: #1976D2;
+  transform: translateY(-1px);
+}
+
+.translation-button:active {
+  transform: translateY(0);
+}

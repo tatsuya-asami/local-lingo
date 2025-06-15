@@ -25,7 +25,9 @@ declare global {
     };
     LanguageDetector?: {
       availability(): Promise<string>;
-      create(options?: { monitor?: (m: any) => void }): Promise<LanguageDetector>;
+      create(options?: {
+        monitor?: (m: any) => void;
+      }): Promise<LanguageDetector>;
     };
   }
 }
@@ -60,6 +62,8 @@ export type DownloadProgress = {
   total?: number;
 };
 
+const AVAILABLE_LANGUAGES = ["en", "ja", "zh", "zh-CN", "zh-TW", "es", "ru"];
+
 export const detectLanguage = async (
   text: string,
   onProgress?: (progress: DownloadProgress) => void
@@ -67,19 +71,22 @@ export const detectLanguage = async (
   if (window.LanguageDetector) {
     try {
       const availability = await window.LanguageDetector.availability();
-      
-      if (availability === 'unavailable') {
+
+      if (availability === "unavailable") {
         const error = await getCompatibilityInstructions();
         return { result: null, error };
       }
 
       let detector;
-      if (availability === 'available') {
+      if (availability === "available") {
         detector = await window.LanguageDetector.create();
-      } else if (availability === 'downloadable' || availability === 'downloading') {
+      } else if (
+        availability === "downloadable" ||
+        availability === "downloading"
+      ) {
         detector = await window.LanguageDetector.create({
           monitor(m) {
-            m.addEventListener('downloadprogress', (e: any) => {
+            m.addEventListener("downloadprogress", (e: any) => {
               console.log(`Downloaded ${e.loaded * 100}%`);
               if (onProgress) {
                 onProgress({
@@ -99,7 +106,11 @@ export const detectLanguage = async (
       const results = await detector.detect(text);
 
       if (results.length > 0) {
-        return { result: results[0].detectedLanguage };
+        const detectedLanguage = results[0].detectedLanguage;
+        if (AVAILABLE_LANGUAGES.includes(detectedLanguage)) {
+          return { result: results[0].detectedLanguage };
+        }
+        return { result: "en" };
       }
       return { result: null };
     } catch (error) {
@@ -154,23 +165,26 @@ export const translateText = async (
         targetLanguage,
       });
 
-      if (availability === 'unavailable') {
+      if (availability === "unavailable") {
         const error = await getCompatibilityInstructions();
         return { result: null, error };
       }
 
       let translator;
-      if (availability === 'available') {
+      if (availability === "available") {
         translator = await window.Translator.create({
           sourceLanguage,
           targetLanguage,
         });
-      } else if (availability === 'downloadable' || availability === 'downloading') {
+      } else if (
+        availability === "downloadable" ||
+        availability === "downloading"
+      ) {
         translator = await window.Translator.create({
           sourceLanguage,
           targetLanguage,
           monitor(m) {
-            m.addEventListener('downloadprogress', (e: any) => {
+            m.addEventListener("downloadprogress", (e: any) => {
               console.log(`Downloaded ${e.loaded * 100}%`);
               if (onProgress) {
                 onProgress({
@@ -241,15 +255,20 @@ export const detectAndTranslate = async (
   const detectedLanguage = detectionResult.result;
   let targetLanguage: string;
 
-  if (detectedLanguage === 'ja') {
-    targetLanguage = 'en';
+  if (detectedLanguage === "ja") {
+    targetLanguage = "en";
   } else {
-    targetLanguage = 'ja';
+    targetLanguage = "ja";
   }
 
   if (detectedLanguage === targetLanguage) {
     return { result: text };
   }
 
-  return await translateText(text, detectedLanguage, targetLanguage, onProgress);
+  return await translateText(
+    text,
+    detectedLanguage,
+    targetLanguage,
+    onProgress
+  );
 };

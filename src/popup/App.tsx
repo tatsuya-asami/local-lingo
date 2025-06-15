@@ -25,83 +25,43 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: '20px', minWidth: '300px' }}>
-      <h2 style={{ marginBottom: '20px', fontSize: '18px' }}>Chrome Offline Translator</h2>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div className="popup-container">
+      <h2 className="popup-title">Chrome Offline Translator</h2>
+      <div className="toggle-section">
         <span>翻訳機能</span>
-        <label style={{ 
-          position: 'relative', 
-          display: 'inline-block', 
-          width: '50px', 
-          height: '26px' 
-        }}>
+        <label className="toggle-switch">
           <input
             type="checkbox"
             checked={isEnabled}
             onChange={toggleEnabled}
-            style={{ opacity: 0, width: 0, height: 0 }}
+            className="toggle-input"
           />
-          <span style={{
-            position: 'absolute',
-            cursor: 'pointer',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: isEnabled ? '#4CAF50' : '#ccc',
-            transition: '0.2s',
-            borderRadius: '26px',
-          }}>
-            <span style={{
-              position: 'absolute',
-              content: '',
-              height: '20px',
-              width: '20px',
-              left: isEnabled ? '27px' : '3px',
-              top: '3px',
-              backgroundColor: 'white',
-              transition: '0.2s',
-              borderRadius: '50%',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            }}></span>
+          <span className={`toggle-slider ${isEnabled ? 'enabled' : 'disabled'}`}>
+            <span className={`toggle-slider-button ${isEnabled ? 'enabled' : 'disabled'}`}></span>
           </span>
         </label>
       </div>
-      <p style={{ marginTop: '15px', fontSize: '12px', color: '#666' }}>
+      <p className="description-text">
         テキストを選択すると翻訳ボタンが表示されます
       </p>
       
       {disabledUrls.length > 0 && (
-        <div style={{ marginTop: '20px' }}>
-          <h3 style={{ fontSize: '14px', marginBottom: '10px', color: '#333' }}>
+        <div className="disabled-sites-section">
+          <h3 className="disabled-sites-title">
             無効化されたサイト
           </h3>
-          <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+          <div className="disabled-sites-list">
             {disabledUrls.map((url, index) => (
               <div 
                 key={index}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '8px 0',
-                  borderBottom: '1px solid #eee'
-                }}
+                className="disabled-site-item"
               >
-                <span style={{ fontSize: '12px', color: '#666', flex: 1 }}>
+                <span className="disabled-site-url">
                   {url}
                 </span>
                 <button
                   onClick={() => removeDisabledUrl(url)}
-                  style={{
-                    padding: '4px 8px',
-                    fontSize: '11px',
-                    background: '#ff4444',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '3px',
-                    cursor: 'pointer'
-                  }}
+                  className="remove-button"
                 >
                   削除
                 </button>

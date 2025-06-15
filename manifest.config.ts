@@ -26,7 +26,7 @@ export default defineManifest({
   content_scripts: [
     {
       js: ["src/content/main.tsx"],
-      matches: ["https://*/*"],
+      matches: ["https://*/*", "http://*/*"],
     },
   ],
   permissions: ["activeTab", "clipboardWrite", "storage"],

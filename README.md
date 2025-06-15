@@ -1,10 +1,10 @@
-# LocalLingo
+# Local Lingo Japan
 
-LocalLingo is a completely offline private translation Chrome extension. It performs translations using Chrome's built-in Translator and Language Detector APIs without any network communication.
+Local Lingo Japan is a completely offline private translation Chrome extension. It performs translations using Chrome's built-in Translator and Language Detector APIs without any network communication.
 
 ## Supported Languages
 
-LocalLingo supports automatic detection and translation for the following languages:
+Local Lingo Japan supports automatic detection and translation for the following languages:
 - 🇺🇸 **English** (en)
 - 🇯🇵 **Japanese** (ja)
 - 🇨🇳 **Chinese Simplified** (zh-CN)
@@ -75,7 +75,7 @@ pnpm run build
 
 ## Privacy
 
-LocalLingo operates completely offline and guarantees:
+Local Lingo Japan operates completely offline and guarantees:
 - No network communication
 - No external data transmission
 - All translation processing performed locally

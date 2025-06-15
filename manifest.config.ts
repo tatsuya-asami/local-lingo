@@ -3,7 +3,7 @@ import pkg from "./package.json";
 
 export default defineManifest({
   manifest_version: 3,
-  name: "LocalLingo",
+  name: "Local Lingo Japan",
   version: pkg.version,
   description:
     "A completely offline private translation tool using Chrome's built-in Translator and Language Detector APIs",

@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <div className="popup-container">
-      <h2 className="popup-title">LocalLingo</h2>
+      <h2 className="popup-title">Local Lingo Japan</h2>
       <div className="toggle-section">
         <span>翻訳機能</span>
         <label className="toggle-switch">

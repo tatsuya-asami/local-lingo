@@ -35,13 +35,9 @@ function App() {
     };
   }, []);
 
-  if (!isEnabled || !isUrlEnabled) {
-    return null;
-  }
-
   return (
     <>
-      <TextSelectionHandler />
+      {(isEnabled && isUrlEnabled) && <TextSelectionHandler />}
       <ContextMenuHandler />
     </>
   );

@@ -120,7 +120,7 @@ export const TextSelectionHandler: React.FC = () => {
                     if (!disabledUrls.includes(hostname)) {
                       disabledUrls.push(hostname);
                       chrome.storage.sync.set({ disabledUrls }, () => {
-                        window.location.reload();
+                        clearSelection();
                       });
                     }
                   });

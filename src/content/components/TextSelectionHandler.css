@@ -184,3 +184,41 @@
   background: #e0e0e0;
   border-color: #ccc;
 }
+
+.translation-buttons-compact {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+}
+
+.translation-buttons-compact .translation-button,
+.translation-buttons-compact .translation-disable-button {
+  padding: 6px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.translation-buttons-compact .translation-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.translation-buttons-compact .translation-disable-button {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.translate-preview {
+  background: #9C27B0;
+  color: white;
+}
+
+.translate-preview:hover {
+  background: #7B1FA2;
+  transform: translateY(-1px);
+}
+
+.translate-preview:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

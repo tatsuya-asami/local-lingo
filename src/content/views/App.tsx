@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TextSelectionHandler } from "../components/TextSelectionHandler";
+import { ContextMenuHandler } from "../components/ContextMenuHandler";
 import "./App.css";
 
 function App() {
@@ -34,11 +35,12 @@ function App() {
     };
   }, []);
 
-  if (!isEnabled || !isUrlEnabled) {
-    return null;
-  }
-
-  return <TextSelectionHandler />;
+  return (
+    <>
+      {(isEnabled && isUrlEnabled) && <TextSelectionHandler />}
+      <ContextMenuHandler />
+    </>
+  );
 }
 
 export default App;

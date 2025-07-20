@@ -29,5 +29,8 @@ export default defineManifest({
       matches: ["https://*/*", "http://*/*"],
     },
   ],
-  permissions: ["activeTab", "clipboardWrite", "storage"],
+  background: {
+    service_worker: "src/background/background.ts",
+  },
+  permissions: ["activeTab", "clipboardWrite", "storage", "contextMenus"],
 });

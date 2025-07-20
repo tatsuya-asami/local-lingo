@@ -82,7 +82,9 @@ export default function App() {
           </label>
         </div>
       )}
-      <p className="description-text">※ 右クリックメニューは常に有効です。</p>
+      <p className="description-text">
+        ※ 各種機能は右クリックメニューから常に使えます。
+      </p>
 
       {disabledUrls.length > 0 && (
         <div className="disabled-sites-section">

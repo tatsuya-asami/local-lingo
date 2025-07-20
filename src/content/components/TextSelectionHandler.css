@@ -207,3 +207,18 @@
   padding: 6px 8px;
   font-size: 12px;
 }
+
+.translate-preview {
+  background: #9C27B0;
+  color: white;
+}
+
+.translate-preview:hover {
+  background: #7B1FA2;
+  transform: translateY(-1px);
+}
+
+.translate-preview:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

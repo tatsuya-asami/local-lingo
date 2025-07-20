@@ -6,15 +6,22 @@ import "./TextSelectionHandler.css";
 export const TextSelectionHandler: React.FC = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [popupMode, setPopupMode] = React.useState<"full" | "compact">("full");
+  const [showPreview, setShowPreview] = React.useState(false);
   
-  const { previewTranslation, handleTranslateReplace, handleTranslateCopy, error, isLoading, downloadProgress, translationResult, clearSelection, currentSelection, handleTranslateReplaceWithSelection, handleTranslateCopyWithSelection } = useTranslationActions();
+  const { previewTranslation, handleTranslateReplace, handleTranslateCopy, error, isLoading, downloadProgress, translationResult, clearSelection, setSelection, currentSelection, handleTranslateReplaceWithSelection, handleTranslateCopyWithSelection } = useTranslationActions();
   
   const { popupRef } = useTextSelection({
     onSelectionChange: (newSelection) => {
       if (newSelection && newSelection.text.trim()) {
-        previewTranslation(newSelection);
+        setShowPreview(false);
+        if (popupMode === "full") {
+          previewTranslation(newSelection);
+        } else {
+          setSelection(newSelection);
+        }
       } else {
         clearSelection();
+        setShowPreview(false);
       }
     }
   });
@@ -107,8 +114,24 @@ export const TextSelectionHandler: React.FC = () => {
         className="translation-buttons-container"
         style={buttonStyle}
       >
-        {popupMode === "compact" ? (
+        {popupMode === "compact" && !showPreview ? (
           <div className="translation-buttons-compact">
+            {isLoading ? (
+              <div className="translation-loading">翻訳中...</div>
+            ) : (
+              <button
+                className="translation-button translate-preview"
+                onClick={async () => {
+                  if (currentSelection) {
+                    await previewTranslation(currentSelection);
+                    setShowPreview(true);
+                  }
+                }}
+                disabled={isLoading || !currentSelection}
+              >
+                プレビュー
+              </button>
+            )}
             <button
               className="translation-button translate-replace"
               onClick={() => handleTranslateReplaceWithSelection(currentSelection)}
@@ -140,6 +163,50 @@ export const TextSelectionHandler: React.FC = () => {
             >
               無効化
             </button>
+          </div>
+        ) : popupMode === "compact" && showPreview && translationResult ? (
+          <div className="translation-content">
+            <div className="translation-result">
+              {translationResult}
+            </div>
+            <div className="translation-buttons">
+              <button
+                className="translation-button translate-replace"
+                onClick={() => {
+                  handleTranslateReplace();
+                  setShowPreview(false);
+                }}
+              >
+                書き換え
+              </button>
+              <button
+                className="translation-button translate-copy"
+                onClick={() => {
+                  handleTranslateCopy();
+                  setShowPreview(false);
+                }}
+              >
+                コピー
+              </button>
+              <button
+                className="translation-disable-button"
+                onClick={() => {
+                  const hostname = window.location.hostname;
+                  chrome.storage.sync.get(['disabledUrls'], (result) => {
+                    const disabledUrls = result.disabledUrls || [];
+                    if (!disabledUrls.includes(hostname)) {
+                      disabledUrls.push(hostname);
+                      chrome.storage.sync.set({ disabledUrls }, () => {
+                        clearSelection();
+                        setShowPreview(false);
+                      });
+                    }
+                  });
+                }}
+              >
+                このサイトで無効化
+              </button>
+            </div>
           </div>
         ) : isLoading ? (
           <div className="translation-loading">

@@ -27,6 +27,14 @@ export const useTranslationActions = () => {
     setError(null);
   };
 
+  const setSelection = (selection: SelectionInfo | null) => {
+    setCurrentSelection(selection);
+    if (!selection) {
+      setTranslationResult(null);
+      setError(null);
+    }
+  };
+
   const previewTranslation = async (selection: SelectionInfo) => {
     setCurrentSelection(selection);
     setIsLoading(true);
@@ -166,6 +174,7 @@ export const useTranslationActions = () => {
     downloadProgress,
     translationResult,
     clearSelection,
+    setSelection,
     currentSelection,
   };
 };

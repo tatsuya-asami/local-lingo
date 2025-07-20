@@ -60,7 +60,7 @@ export default function App() {
       </div>
       {isEnabled && (
         <div className="toggle-section">
-          <span>ポップアップ表示モード</span>
+          <span>翻訳結果を表示</span>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -69,7 +69,9 @@ export default function App() {
               className="toggle-input"
             />
             <span
-              className={`toggle-slider ${popupMode === "full" ? "enabled" : "disabled"}`}
+              className={`toggle-slider ${
+                popupMode === "full" ? "enabled" : "disabled"
+              }`}
             >
               <span
                 className={`toggle-slider-button ${
@@ -80,11 +82,6 @@ export default function App() {
           </label>
         </div>
       )}
-      <p className="description-text">
-        {isEnabled && popupMode === "full" && "選択時にポップアップをフルで表示"}
-        {isEnabled && popupMode === "compact" && "選択時にポップアップを小さく表示"}
-        {!isEnabled && "ポップアップは無効です"}
-      </p>
       <p className="description-text">※ 右クリックメニューは常に有効です。</p>
 
       {disabledUrls.length > 0 && (

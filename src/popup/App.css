@@ -1,5 +1,8 @@
 .popup-container {
   padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .popup-title {
@@ -64,8 +67,6 @@
 }
 
 .description-text {
-  margin-top: 8px;
-  font-size: 12px;
   color: #666;
 }
 

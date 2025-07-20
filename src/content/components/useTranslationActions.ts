@@ -91,10 +91,76 @@ export const useTranslationActions = () => {
     clearSelection();
   };
 
+  const handleTranslateReplaceWithSelection = async (selection: SelectionInfo) => {
+    setCurrentSelection(selection);
+    setIsLoading(true);
+    setError(null);
+    
+    const { text } = selection;
+    const result = await detectAndTranslate(text);
+    
+    if (result.error) {
+      setError(result.error);
+      setIsLoading(false);
+      return;
+    }
+    
+    if (result.result) {
+      const { target } = selection;
+      const start = target.selectionStart ?? 0;
+      const end = target.selectionEnd ?? 0;
+
+      target.value =
+        target.value.substring(0, start) +
+        result.result +
+        target.value.substring(end);
+
+      const inputEvent = new Event("input", { bubbles: true });
+      target.dispatchEvent(inputEvent);
+
+      clearSelection();
+
+      target.focus();
+      target.setSelectionRange(
+        start + result.result.length,
+        start + result.result.length
+      );
+    }
+    
+    setIsLoading(false);
+  };
+
+  const handleTranslateCopyWithSelection = async (selection: SelectionInfo) => {
+    setCurrentSelection(selection);
+    setIsLoading(true);
+    setError(null);
+    
+    const { text } = selection;
+    const result = await detectAndTranslate(text);
+    
+    if (result.error) {
+      setError(result.error);
+      setIsLoading(false);
+      return;
+    }
+    
+    if (result.result) {
+      await navigator.clipboard.writeText(result.result);
+      if (selection) {
+        selection.target.focus();
+      }
+      clearSelection();
+    }
+    
+    setIsLoading(false);
+  };
+
   return {
     previewTranslation,
     handleTranslateReplace,
     handleTranslateCopy,
+    handleTranslateReplaceWithSelection,
+    handleTranslateCopyWithSelection,
     error,
     isLoading,
     downloadProgress,

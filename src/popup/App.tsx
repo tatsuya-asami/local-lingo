@@ -3,13 +3,15 @@ import "./App.css";
 
 export default function App() {
   const [isEnabled, setIsEnabled] = useState(true);
+  const [popupMode, setPopupMode] = useState<"full" | "compact">("full");
   const [disabledUrls, setDisabledUrls] = useState<string[]>([]);
 
   useEffect(() => {
     chrome.storage.sync.get(
-      ["translationEnabled", "disabledUrls"],
+      ["translationEnabled", "popupMode", "disabledUrls"],
       (result) => {
         setIsEnabled(result.translationEnabled !== false);
+        setPopupMode(result.popupMode || "full");
         setDisabledUrls(result.disabledUrls || []);
       }
     );
@@ -19,6 +21,12 @@ export default function App() {
     const newValue = !isEnabled;
     setIsEnabled(newValue);
     chrome.storage.sync.set({ translationEnabled: newValue });
+  };
+
+  const togglePopupMode = () => {
+    const newMode = popupMode === "full" ? "compact" : "full";
+    setPopupMode(newMode);
+    chrome.storage.sync.set({ popupMode: newMode });
   };
 
   const removeDisabledUrl = (urlToRemove: string) => {
@@ -50,6 +58,33 @@ export default function App() {
           </span>
         </label>
       </div>
+      {isEnabled && (
+        <div className="toggle-section">
+          <span>ポップアップ表示モード</span>
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={popupMode === "full"}
+              onChange={togglePopupMode}
+              className="toggle-input"
+            />
+            <span
+              className={`toggle-slider ${popupMode === "full" ? "enabled" : "disabled"}`}
+            >
+              <span
+                className={`toggle-slider-button ${
+                  popupMode === "full" ? "enabled" : "disabled"
+                }`}
+              ></span>
+            </span>
+          </label>
+        </div>
+      )}
+      <p className="description-text">
+        {isEnabled && popupMode === "full" && "選択時にポップアップをフルで表示"}
+        {isEnabled && popupMode === "compact" && "選択時にポップアップを小さく表示"}
+        {!isEnabled && "ポップアップは無効です"}
+      </p>
       <p className="description-text">※ 右クリックメニューは常に有効です。</p>
 
       {disabledUrls.length > 0 && (

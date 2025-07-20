@@ -5,8 +5,9 @@ import "./TextSelectionHandler.css";
 
 export const TextSelectionHandler: React.FC = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [popupMode, setPopupMode] = React.useState<"full" | "compact">("full");
   
-  const { previewTranslation, handleTranslateReplace, handleTranslateCopy, error, isLoading, downloadProgress, translationResult, clearSelection, currentSelection } = useTranslationActions();
+  const { previewTranslation, handleTranslateReplace, handleTranslateCopy, error, isLoading, downloadProgress, translationResult, clearSelection, currentSelection, handleTranslateReplaceWithSelection, handleTranslateCopyWithSelection } = useTranslationActions();
   
   const { popupRef } = useTextSelection({
     onSelectionChange: (newSelection) => {
@@ -17,6 +18,26 @@ export const TextSelectionHandler: React.FC = () => {
       }
     }
   });
+
+  React.useEffect(() => {
+    chrome.storage.sync.get(['popupMode'], (result) => {
+      setPopupMode(result.popupMode || 'full');
+    });
+
+    const listener = (changes: {
+      [key: string]: chrome.storage.StorageChange;
+    }) => {
+      if (changes.popupMode) {
+        setPopupMode(changes.popupMode.newValue || 'full');
+      }
+    };
+
+    chrome.storage.onChanged.addListener(listener);
+
+    return () => {
+      chrome.storage.onChanged.removeListener(listener);
+    };
+  }, []);
 
   React.useEffect(() => {
     if (error && dialogRef.current) {
@@ -86,7 +107,41 @@ export const TextSelectionHandler: React.FC = () => {
         className="translation-buttons-container"
         style={buttonStyle}
       >
-        {isLoading ? (
+        {popupMode === "compact" ? (
+          <div className="translation-buttons-compact">
+            <button
+              className="translation-button translate-replace"
+              onClick={() => handleTranslateReplaceWithSelection(currentSelection)}
+              disabled={isLoading}
+            >
+              書き換え
+            </button>
+            <button
+              className="translation-button translate-copy"
+              onClick={() => handleTranslateCopyWithSelection(currentSelection)}
+              disabled={isLoading}
+            >
+              コピー
+            </button>
+            <button
+              className="translation-disable-button"
+              onClick={() => {
+                const hostname = window.location.hostname;
+                chrome.storage.sync.get(['disabledUrls'], (result) => {
+                  const disabledUrls = result.disabledUrls || [];
+                  if (!disabledUrls.includes(hostname)) {
+                    disabledUrls.push(hostname);
+                    chrome.storage.sync.set({ disabledUrls }, () => {
+                      clearSelection();
+                    });
+                  }
+                });
+              }}
+            >
+              無効化
+            </button>
+          </div>
+        ) : isLoading ? (
           <div className="translation-loading">
             {downloadProgress 
               ? `ダウンロード中... ${Math.round(downloadProgress.loaded * 100)}%`

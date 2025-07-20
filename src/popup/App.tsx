@@ -3,7 +3,7 @@ import "./App.css";
 
 export default function App() {
   const [isEnabled, setIsEnabled] = useState(true);
-  const [popupMode, setPopupMode] = useState<"full" | "compact">("full");
+  const [popupMode, setPopupMode] = useState<"full" | "compact">("compact");
   const [disabledUrls, setDisabledUrls] = useState<string[]>([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function App() {
       ["translationEnabled", "popupMode", "disabledUrls"],
       (result) => {
         setIsEnabled(result.translationEnabled !== false);
-        setPopupMode(result.popupMode || "full");
+        setPopupMode(result.popupMode || "compact");
         setDisabledUrls(result.disabledUrls || []);
       }
     );

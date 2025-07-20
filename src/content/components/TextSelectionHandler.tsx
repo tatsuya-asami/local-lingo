@@ -5,7 +5,7 @@ import "./TextSelectionHandler.css";
 
 export const TextSelectionHandler: React.FC = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [popupMode, setPopupMode] = React.useState<"full" | "compact">("full");
+  const [popupMode, setPopupMode] = React.useState<"full" | "compact">("compact");
   const [showPreview, setShowPreview] = React.useState(false);
 
   const {
@@ -41,14 +41,14 @@ export const TextSelectionHandler: React.FC = () => {
 
   React.useEffect(() => {
     chrome.storage.sync.get(["popupMode"], (result) => {
-      setPopupMode(result.popupMode || "full");
+      setPopupMode(result.popupMode || "compact");
     });
 
     const listener = (changes: {
       [key: string]: chrome.storage.StorageChange;
     }) => {
       if (changes.popupMode) {
-        setPopupMode(changes.popupMode.newValue || "full");
+        setPopupMode(changes.popupMode.newValue || "compact");
       }
     };
 

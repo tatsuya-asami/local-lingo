@@ -60,7 +60,7 @@ export default function App() {
       </div>
       {isEnabled && (
         <div className="toggle-section">
-          <span>翻訳結果を表示</span>
+          <span>翻訳結果を選択時に表示</span>
           <label className="toggle-switch">
             <input
               type="checkbox"

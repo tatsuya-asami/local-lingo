@@ -7,9 +7,22 @@ export const TextSelectionHandler: React.FC = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [popupMode, setPopupMode] = React.useState<"full" | "compact">("full");
   const [showPreview, setShowPreview] = React.useState(false);
-  
-  const { previewTranslation, handleTranslateReplace, handleTranslateCopy, error, isLoading, downloadProgress, translationResult, clearSelection, setSelection, currentSelection, handleTranslateReplaceWithSelection, handleTranslateCopyWithSelection } = useTranslationActions();
-  
+
+  const {
+    previewTranslation,
+    handleTranslateReplace,
+    handleTranslateCopy,
+    error,
+    isLoading,
+    downloadProgress,
+    translationResult,
+    clearSelection,
+    setSelection,
+    currentSelection,
+    handleTranslateReplaceWithSelection,
+    handleTranslateCopyWithSelection,
+  } = useTranslationActions();
+
   const { popupRef } = useTextSelection({
     onSelectionChange: (newSelection) => {
       if (newSelection && newSelection.text.trim()) {
@@ -23,19 +36,19 @@ export const TextSelectionHandler: React.FC = () => {
         clearSelection();
         setShowPreview(false);
       }
-    }
+    },
   });
 
   React.useEffect(() => {
-    chrome.storage.sync.get(['popupMode'], (result) => {
-      setPopupMode(result.popupMode || 'full');
+    chrome.storage.sync.get(["popupMode"], (result) => {
+      setPopupMode(result.popupMode || "full");
     });
 
     const listener = (changes: {
       [key: string]: chrome.storage.StorageChange;
     }) => {
       if (changes.popupMode) {
-        setPopupMode(changes.popupMode.newValue || 'full');
+        setPopupMode(changes.popupMode.newValue || "full");
       }
     };
 
@@ -59,22 +72,22 @@ export const TextSelectionHandler: React.FC = () => {
   }
 
   const { rect } = currentSelection;
-  
+
   const popupHeight = 45;
   const margin = 20;
   const viewportWidth = window.innerWidth;
-  
+
   let top = rect.top - popupHeight - margin;
   let left = rect.left;
-  
+
   if (top < margin) {
     top = rect.bottom + margin;
   }
-  
+
   if (left + 300 > viewportWidth) {
     left = viewportWidth - 300 - margin;
   }
-  
+
   if (left < margin) {
     left = margin;
   }
@@ -129,12 +142,14 @@ export const TextSelectionHandler: React.FC = () => {
                 }}
                 disabled={isLoading || !currentSelection}
               >
-                プレビュー
+                結果を表示
               </button>
             )}
             <button
               className="translation-button translate-replace"
-              onClick={() => handleTranslateReplaceWithSelection(currentSelection)}
+              onClick={() =>
+                handleTranslateReplaceWithSelection(currentSelection)
+              }
               disabled={isLoading}
             >
               書き換え
@@ -150,7 +165,7 @@ export const TextSelectionHandler: React.FC = () => {
               className="translation-disable-button"
               onClick={() => {
                 const hostname = window.location.hostname;
-                chrome.storage.sync.get(['disabledUrls'], (result) => {
+                chrome.storage.sync.get(["disabledUrls"], (result) => {
                   const disabledUrls = result.disabledUrls || [];
                   if (!disabledUrls.includes(hostname)) {
                     disabledUrls.push(hostname);
@@ -161,14 +176,12 @@ export const TextSelectionHandler: React.FC = () => {
                 });
               }}
             >
-              無効化
+              このサイトで無効化
             </button>
           </div>
         ) : popupMode === "compact" && showPreview && translationResult ? (
           <div className="translation-content">
-            <div className="translation-result">
-              {translationResult}
-            </div>
+            <div className="translation-result">{translationResult}</div>
             <div className="translation-buttons">
               <button
                 className="translation-button translate-replace"
@@ -192,7 +205,7 @@ export const TextSelectionHandler: React.FC = () => {
                 className="translation-disable-button"
                 onClick={() => {
                   const hostname = window.location.hostname;
-                  chrome.storage.sync.get(['disabledUrls'], (result) => {
+                  chrome.storage.sync.get(["disabledUrls"], (result) => {
                     const disabledUrls = result.disabledUrls || [];
                     if (!disabledUrls.includes(hostname)) {
                       disabledUrls.push(hostname);
@@ -210,16 +223,15 @@ export const TextSelectionHandler: React.FC = () => {
           </div>
         ) : isLoading ? (
           <div className="translation-loading">
-            {downloadProgress 
-              ? `ダウンロード中... ${Math.round(downloadProgress.loaded * 100)}%`
-              : '翻訳中...'
-            }
+            {downloadProgress
+              ? `ダウンロード中... ${Math.round(
+                  downloadProgress.loaded * 100
+                )}%`
+              : "翻訳中..."}
           </div>
         ) : translationResult ? (
           <div className="translation-content">
-            <div className="translation-result">
-              {translationResult}
-            </div>
+            <div className="translation-result">{translationResult}</div>
             <div className="translation-buttons">
               <button
                 className="translation-button translate-replace"
@@ -237,7 +249,7 @@ export const TextSelectionHandler: React.FC = () => {
                 className="translation-disable-button"
                 onClick={() => {
                   const hostname = window.location.hostname;
-                  chrome.storage.sync.get(['disabledUrls'], (result) => {
+                  chrome.storage.sync.get(["disabledUrls"], (result) => {
                     const disabledUrls = result.disabledUrls || [];
                     if (!disabledUrls.includes(hostname)) {
                       disabledUrls.push(hostname);
@@ -253,9 +265,7 @@ export const TextSelectionHandler: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="translation-loading">
-            翻訳を準備中...
-          </div>
+          <div className="translation-loading">翻訳を準備中...</div>
         )}
       </div>
     </>
